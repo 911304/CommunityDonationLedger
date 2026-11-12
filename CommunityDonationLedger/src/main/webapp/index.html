@@ -1,0 +1,418 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GiveTrack | Community Donation Ledger</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="app">
+
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">G</div>
+            <div>
+                <h2>GiveTrack</h2>
+                <small>Donation Management</small>
+            </div>
+        </div>
+
+        <p class="menu-label">MAIN MENU</p>
+
+        <nav>
+            <button class="nav-link active" data-page="dashboard">▦ Dashboard</button>
+            <button class="nav-link" data-page="donations">♡ Donations</button>
+            <button class="nav-link" data-page="beneficiaries">♙ Beneficiaries</button>
+            <button class="nav-link" data-page="allocations">⇄ Allocations</button>
+            <button class="nav-link" data-page="reports">▤ Reports</button>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="admin-avatar">A</div>
+            <div>
+                <strong>Administrator</strong>
+                <small>System Manager</small>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+
+        <header class="topbar">
+            <div>
+                <h1 id="page-title">Dashboard</h1>
+                <p>Welcome back! Here's your donation overview.</p>
+            </div>
+            <div class="topbar-right">
+                <span class="live-dot"></span>
+                <span>System Online</span>
+            </div>
+        </header>
+
+        <div id="toast" class="toast"></div>
+
+        <!-- DASHBOARD -->
+        <section id="dashboard" class="page active">
+
+            <div class="welcome-card">
+                <div>
+                    <span class="eyebrow">COMMUNITY IMPACT</span>
+                    <h2>Every contribution creates a difference.</h2>
+                    <p>Track donations, manage beneficiaries and monitor allocations transparently.</p>
+                </div>
+                <div class="welcome-symbol">♡</div>
+            </div>
+
+            <div class="stats-grid">
+
+                <div class="stat-card">
+                    <div class="stat-icon purple">₹</div>
+                    <p>Total Donations</p>
+                    <h2 id="total-donations">₹0.00</h2>
+                    <small>All recorded contributions</small>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon green">↗</div>
+                    <p>Total Allocated</p>
+                    <h2 id="total-allocated">₹0.00</h2>
+                    <small>Funds distributed</small>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon orange">₹</div>
+                    <p>Remaining Balance</p>
+                    <h2 id="remaining-balance">₹0.00</h2>
+                    <small>Available donation balance</small>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon blue">♙</div>
+                    <p>Beneficiaries</p>
+                    <h2 id="beneficiary-count">0</h2>
+                    <small>Registered beneficiaries</small>
+                </div>
+
+            </div>
+
+            <div class="content-card">
+                <div class="section-heading">
+                    <div>
+                        <h2>Recent Donations</h2>
+                        <p>Latest recorded contributions</p>
+                    </div>
+                    <button class="secondary-btn" data-go="donations">View Donations</button>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Donor</th>
+                                <th>Date</th>
+                                <th>Type</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recent-donations">
+                            <tr><td colspan="5">Loading donations...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- DONATIONS -->
+        <section id="donations" class="page">
+
+            <div class="content-card">
+                <div class="section-heading">
+                    <div>
+                        <h2>Record a Donation</h2>
+                        <p>Enter donor and contribution details.</p>
+                    </div>
+                </div>
+
+                <form id="donation-form" class="form-grid">
+
+                    <div class="form-group">
+                        <label>Donor Name *</label>
+                        <input type="text" name="donorName" placeholder="Enter donor name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="tel" name="phone" placeholder="Enter phone number">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" name="email" placeholder="Enter email">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Donation Date *</label>
+                        <input type="date" name="donationDate" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Donation Type *</label>
+                        <select name="donationType" required>
+                            <option value="">Select donation type</option>
+                            <option value="Money">Money</option>
+                            <option value="Food">Food</option>
+                            <option value="Clothes">Clothes</option>
+                            <option value="Medicine">Medicine</option>
+                            <option value="Education">Education</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Amount (₹) *</label>
+                        <input type="number" name="amount" min="0.01" step="0.01" placeholder="Enter amount" required>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>Donor Address</label>
+                        <input type="text" name="address" placeholder="Enter address">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>Description</label>
+                        <textarea name="description" placeholder="Enter donation details"></textarea>
+                    </div>
+
+                    <div class="form-actions full-width">
+                        <button type="reset" class="secondary-btn">Clear</button>
+                        <button type="submit" class="primary-btn">Save Donation</button>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="content-card">
+                <div class="section-heading">
+                    <div>
+                        <h2>Donation Records</h2>
+                        <p>All registered donations</p>
+                    </div>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Donor</th>
+                                <th>Date</th>
+                                <th>Type</th>
+                                <th>Amount</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody id="donation-table">
+                            <tr><td colspan="6">No records available.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- BENEFICIARIES -->
+        <section id="beneficiaries" class="page">
+
+            <div class="content-card">
+                <div class="section-heading">
+                    <div>
+                        <h2>Register Beneficiary</h2>
+                        <p>Add individuals or organizations receiving support.</p>
+                    </div>
+                </div>
+
+                <form id="beneficiary-form" class="form-grid">
+
+                    <div class="form-group">
+                        <label>Beneficiary Name *</label>
+                        <input type="text" name="name" placeholder="Enter name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Category *</label>
+                        <select name="category" required>
+                            <option value="">Select category</option>
+                            <option value="Education">Education</option>
+                            <option value="Healthcare">Healthcare</option>
+                            <option value="Food Support">Food Support</option>
+                            <option value="Shelter">Shelter</option>
+                            <option value="Community">Community</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Contact Number</label>
+                        <input type="tel" name="contact" placeholder="Enter contact number">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Address</label>
+                        <input type="text" name="address" placeholder="Enter address">
+                    </div>
+
+                    <div class="form-actions full-width">
+                        <button type="reset" class="secondary-btn">Clear</button>
+                        <button type="submit" class="primary-btn">Add Beneficiary</button>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="content-card">
+                <div class="section-heading">
+                    <div>
+                        <h2>Beneficiary Directory</h2>
+                        <p>Registered beneficiary details</p>
+                    </div>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Category</th>
+                                <th>Contact</th>
+                                <th>Address</th>
+                            </tr>
+                        </thead>
+                        <tbody id="beneficiary-table">
+                            <tr><td colspan="5">No beneficiaries available.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ALLOCATIONS -->
+        <section id="allocations" class="page">
+
+            <div class="content-card">
+                <div class="section-heading">
+                    <div>
+                        <h2>Allocate Donations</h2>
+                        <p>Assign available donation funds to beneficiaries.</p>
+                    </div>
+                </div>
+
+                <form id="allocation-form" class="form-grid">
+
+                    <div class="form-group">
+                        <label>Donation ID *</label>
+                        <input type="number" name="donationId" min="1" placeholder="Enter donation ID" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Beneficiary ID *</label>
+                        <input type="number" name="beneficiaryId" min="1" placeholder="Enter beneficiary ID" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Allocation Date *</label>
+                        <input type="date" name="allocationDate" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Amount (₹) *</label>
+                        <input type="number" name="amount" min="0.01" step="0.01" placeholder="Enter amount" required>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>Purpose *</label>
+                        <textarea name="purpose" placeholder="Explain the allocation purpose" required></textarea>
+                    </div>
+
+                    <div class="form-actions full-width">
+                        <button type="reset" class="secondary-btn">Clear</button>
+                        <button type="submit" class="primary-btn">Save Allocation</button>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="content-card">
+                <div class="section-heading">
+                    <div>
+                        <h2>Allocation Records</h2>
+                        <p>Track how donations are distributed.</p>
+                    </div>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Donation ID</th>
+                                <th>Beneficiary</th>
+                                <th>Amount</th>
+                                <th>Purpose</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="allocation-table">
+                            <tr><td colspan="7">No allocations available.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- REPORTS -->
+        <section id="reports" class="page">
+
+            <div class="content-card">
+                <div class="section-heading">
+                    <div>
+                        <h2>Donation Transparency Report</h2>
+                        <p>Donation-wise allocation and remaining balance.</p>
+                    </div>
+                    <button class="secondary-btn" id="refresh-reports">Refresh Report</button>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Donation ID</th>
+                                <th>Donor</th>
+                                <th>Donation Amount</th>
+                                <th>Allocated Amount</th>
+                                <th>Remaining Balance</th>
+                            </tr>
+                        </thead>
+                        <tbody id="report-table">
+                            <tr><td colspan="5">Loading report...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </section>
+
+        <footer>
+            GiveTrack © 2026 | Community Donation Ledger with Allocation Tracking
+        </footer>
+
+    </main>
+</div>
+
+<script src="js/script.js"></script>
+</body>
+</html>

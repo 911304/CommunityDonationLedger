@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GiveTrack | Login</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #102a43, #176b87);
+            padding: 20px;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 420px;
+            padding: 35px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, .2);
+        }
+
+        .brand {
+            text-align: center;
+            color: #176b87;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 28px;
+        }
+
+        label {
+            display: block;
+            margin: 15px 0 7px;
+            font-weight: bold;
+            color: #263746;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 7px;
+            font-size: 15px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 22px;
+            padding: 13px;
+            border: none;
+            border-radius: 7px;
+            background: #176b87;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #104e68;
+        }
+
+        button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        #message {
+            margin-top: 15px;
+            text-align: center;
+            color: #b42318;
+            font-size: 14px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 25px;
+            color: #777;
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-card">
+
+        <div class="brand">GiveTrack</div>
+
+        <p class="subtitle">
+            Community Donation Ledger
+        </p>
+
+        <form id="loginForm">
+
+            <label for="email">Email Address</label>
+            <input
+                type="email"
+                id="email"
+                placeholder="Enter your email"
+                required
+            >
+
+            <label for="password">Password</label>
+            <input
+                type="password"
+                id="password"
+                placeholder="Enter your password"
+                required
+            >
+
+            <button type="submit" id="loginButton">
+                Login
+            </button>
+
+            <div id="message"></div>
+
+        </form>
+
+        <div class="footer">
+            GiveTrack | Community Donation Management System
+        </div>
+
+    </div>
+
+    <script>
+        const basePath = window.location.pathname.substring(
+            0,
+            window.location.pathname.lastIndexOf("/")
+        );
+
+        const API = basePath + "/api";
+
+        document.getElementById("loginForm").addEventListener(
+            "submit",
+            async function(event) {
+
+                event.preventDefault();
+
+                const message = document.getElementById("message");
+                const loginButton = document.getElementById("loginButton");
+
+                message.textContent = "Signing in...";
+                loginButton.disabled = true;
+
+                try {
+                    const response = await fetch(API + "/login", {
+                        method: "POST",
+                        credentials: "same-origin",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            email: document.getElementById("email").value,
+                            password: document.getElementById("password").value
+                        })
+                    });
+
+                    const result = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(result.error || "Login failed.");
+                    }
+
+                    window.location.href = basePath + "/index.html";
+
+                } catch (error) {
+                    message.textContent = error.message;
+                    loginButton.disabled = false;
+                }
+            }
+        );
+
+        // Redirect to dashboard if already logged in.
+        fetch(API + "/me", {
+            credentials: "same-origin"
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.href = basePath + "/index.html";
+            }
+        })
+        .catch(() => {});
+    </script>
+
+</body>
+</html>
